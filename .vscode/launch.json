@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FastAPI Server",
+      "type": "python",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["api.main:app", "--reload", "--port", "8000"],
+      "cwd": "${workspaceFolder}",
+      "env": {"PYTHONPATH": "${workspaceFolder}/src"}
+    },
+    {
+      "name": "Run Tests",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["tests/unit/", "-v"],
+      "cwd": "${workspaceFolder}",
+      "env": {"PYTHONPATH": "${workspaceFolder}/src"}
+    },
+    {
+      "name": "Train BayesViT",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/train.py",
+      "args": ["--config", "configs/default.yaml"],
+      "cwd": "${workspaceFolder}",
+      "env": {"PYTHONPATH": "${workspaceFolder}/src"}
+    }
+  ]
+}

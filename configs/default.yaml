@@ -1,0 +1,53 @@
+# NeuroLens — Default Configuration
+# Managed with OmegaConf. Override with: python train.py model.num_classes=4
+
+model:
+  num_classes: 4           # AD, PD, MCI, Healthy
+  num_trainable_blocks: 4  # Top N ViT blocks replaced with GVA
+  img_size: 224
+  use_riemannian: true      # Enable Geodesic Variational Attention
+  pretrained: true          # Load DINO pretrained weights
+
+training:
+  epochs: 50
+  batch_size: 16            # CPU-safe batch size
+  learning_rate: 3.0e-4
+  weight_decay: 1.0e-4
+  grad_clip: 1.0
+  n_cycles_kl: 4            # KL annealing cycles
+  gamma_ece: 0.1            # ECE loss weight
+  n_folds: 5                # K-Fold cross-validation
+
+data:
+  dataset: rfmid            # Options: rfmid, origa, drive
+  data_dir: data/processed
+  img_size: 224
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+  num_workers: 0            # 0 for CPU (avoid multiprocessing overhead)
+  pin_memory: false
+
+inference:
+  n_mc_samples: 20          # Monte Carlo samples at inference
+  alpha: 0.05               # Conformal coverage: 1 - alpha = 95%
+  uncertainty_thresh:
+    epistemic: 0.5
+    aleatoric: 0.7
+
+federated:
+  num_clients: 3
+  num_rounds: 50
+  local_epochs: 5
+  fraction_fit: 1.0         # All clients participate each round
+  aggregation: frap          # Options: frap (ours), fedavg (baseline)
+
+logging:
+  project: neurolens
+  entity: your_wandb_username
+  log_interval: 10
+  save_best: true
+  checkpoint_dir: checkpoints
+
+device: cpu                  # Override to cuda if available on Colab
+seed: 42
